@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Keyboard,
+  Platform,
   StatusBar,
   StyleSheet,
   Text,
@@ -59,7 +60,11 @@ export const Initial = () => {
         <Autocomplete
           autoCapitalize="none"
           autoCorrect={false}
-          containerStyle={styles.autocompleteContainer}
+          containerStyle={
+            Platform.OS === 'ios'
+              ? styles.autocompleteContainerIOS
+              : styles.autocompleteContainerAndroid
+          }
           data={suggestions}
           defaultValue={searchText}
           onChangeText={setSearchText}
@@ -89,8 +94,16 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 25,
   },
-  autocompleteContainer: {
+  autocompleteContainerIOS: {
     marginHorizontal: 10,
+  },
+  autocompleteContainerAndroid: {
+    flex: 1,
+    left: 0,
+    position: 'absolute',
+    right: 0,
+    top: 0,
+    zIndex: 1,
   },
   suggestionContainer: {
     margin: 5,
