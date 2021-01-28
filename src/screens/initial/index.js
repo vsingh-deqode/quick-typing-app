@@ -1,14 +1,13 @@
 import React from 'react';
 import {
   Keyboard,
-  Platform,
   StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
 } from 'react-native';
-import Autocomplete from 'react-native-autocomplete-input';
 import {MockServer} from '../../api/MockServer';
+import {TextInputQuickTyping} from '../../common/components/TextInputQuickTyping';
 import {isTextNullOrEmpty} from '../../utilities/isTextNullOrEmpty';
 import {lastWord} from '../../utilities/lastWord';
 
@@ -50,6 +49,20 @@ export const Initial = () => {
     setSuggestions([]);
   };
 
+  const renderItem = ({item, index}) => (
+    <TouchableOpacity
+      key={index.toString()}
+      style={styles.suggestionContainer}
+      onPress={() => onPressSuggestion(item)}>
+      <Text
+        style={styles.suggestionContainerText(
+          item.toString().toLowerCase() === query.toString().toLowerCase(),
+        )}>
+        {item}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
@@ -57,32 +70,12 @@ export const Initial = () => {
         activeOpacity={1}
         style={styles.container}
         onPress={onOutSideTouch}>
-        <Autocomplete
-          autoCapitalize="none"
-          autoCorrect={false}
-          containerStyle={
-            Platform.OS === 'ios'
-              ? styles.autocompleteContainerIOS
-              : styles.autocompleteContainerAndroid
-          }
-          data={suggestions}
+        <TextInputQuickTyping
+          suggestions={suggestions}
           defaultValue={searchText}
           onChangeText={setSearchText}
           placeholder="Search"
-          renderItem={({item, index}) => (
-            <TouchableOpacity
-              key={index.toString()}
-              style={styles.suggestionContainer}
-              onPress={() => onPressSuggestion(item)}>
-              <Text
-                style={styles.suggestionContainerText(
-                  item.toString().toLowerCase() ===
-                    query.toString().toLowerCase(),
-                )}>
-                {item}
-              </Text>
-            </TouchableOpacity>
-          )}
+          renderItem={renderItem}
         />
       </TouchableOpacity>
     </>
@@ -92,18 +85,6 @@ export const Initial = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 25,
-  },
-  autocompleteContainerIOS: {
-    marginHorizontal: 10,
-  },
-  autocompleteContainerAndroid: {
-    flex: 1,
-    left: 0,
-    position: 'absolute',
-    right: 0,
-    top: 0,
-    zIndex: 1,
   },
   suggestionContainer: {
     margin: 5,
