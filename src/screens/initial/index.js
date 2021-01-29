@@ -76,6 +76,7 @@ export const Initial = () => {
           onChangeText={setSearchText}
           placeholder="Search"
           renderItem={renderItem}
+          keyExtractor={(_, index) => index.toString()}
         />
       </TouchableOpacity>
     </>

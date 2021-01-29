@@ -22,6 +22,7 @@ export const TextInputQuickTyping = ({
   keyboardShouldPersistTaps,
   onPressSuggestion,
   renderItem,
+  keyExtractor,
   flatListProps,
   ...props
 }) => {
@@ -40,6 +41,7 @@ export const TextInputQuickTyping = ({
       <FlatList
         data={suggestions}
         style={[styles.list, listStyle]}
+        keyExtractor={keyExtractor}
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
         renderItem={renderItem ?? renderDefaultItem}
         {...flatListProps}
