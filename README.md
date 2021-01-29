@@ -2,6 +2,10 @@
 
 App is a test task and provide quick typing with text input suggestions in react-native.
 
+# How it works
+
+![](https://github.com/vsingh-deqode/quick-typing-app/blob/main/src/assets/demo.gif)
+
 ### Tech
 
 App uses:
