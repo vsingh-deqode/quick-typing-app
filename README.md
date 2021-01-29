@@ -19,14 +19,14 @@ App uses:
 - XCode
 - AndroidStudio
 - Editor(VSCode or else)
-  Note: Latest versions are prefreable.
+  Note: Latest versions are preferable.
 
 ### Installation
 
 Install the dependencies and devDependencies and start the server.
 
 ```sh
-$ git clone <repo-url>
+$ git clone https://github.com/vsingh-deqode/quick-typing-app.git
 $ cd App
 $ yarn
 ```
