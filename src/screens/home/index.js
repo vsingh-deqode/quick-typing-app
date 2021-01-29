@@ -9,7 +9,7 @@ export const Home = () => {
   const [options, setOptions] = React.useState([]);
 
   React.useEffect(() => {
-    debounce(getSuggestions(query), 500);
+    debounce(() => getSuggestions(query), 500);
   }, [query, getSuggestions]);
 
   const getSuggestions = React.useCallback(
