@@ -1,5 +1,5 @@
 import React from 'react';
-import {Keyboard, StatusBar, StyleSheet, TouchableOpacity} from 'react-native';
+import {Keyboard, StyleSheet, TouchableOpacity} from 'react-native';
 import {MockServer} from '../../api/MockServer';
 import TextInputQuickTyping from '../../common/components/TextInputQuickTyping';
 import {debounce} from '../../utils/debounce';
@@ -28,19 +28,16 @@ export const Home = () => {
   };
 
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <TouchableOpacity
-        activeOpacity={1}
-        style={styles.container}
-        onPress={onOutSideTouch}>
-        <TextInputQuickTyping
-          data={options}
-          onChangeQuery={setQuery}
-          placeholder="Search"
-        />
-      </TouchableOpacity>
-    </>
+    <TouchableOpacity
+      activeOpacity={1}
+      style={styles.container}
+      onPress={onOutSideTouch}>
+      <TextInputQuickTyping
+        data={options}
+        onChangeQuery={setQuery}
+        placeholder="Search"
+      />
+    </TouchableOpacity>
   );
 };
 
