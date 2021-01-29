@@ -1,6 +1,6 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {Initial} from '../../screens/initial';
+import {Initial} from '../../../screens/initial';
 import {InitialScreen} from '../constants/InitialScreen';
 
 const Stack = createStackNavigator();
