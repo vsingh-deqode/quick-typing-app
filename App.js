@@ -1,12 +1,12 @@
 import {NavigationContainer} from '@react-navigation/native';
 import * as React from 'react';
 import 'react-native-gesture-handler';
-import {InitialNavigator} from './src/common/navigation/navigator/InitialNavigator';
+import {HomeNavigator} from './src/common/navigation/navigator/HomeNavigator';
 
 export default function App() {
   return (
     <NavigationContainer>
-      <InitialNavigator />
+      <HomeNavigator />
     </NavigationContainer>
   );
 }
