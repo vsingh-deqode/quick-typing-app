@@ -27,25 +27,21 @@ export const TextInputQuickTyping = ({
 }) => {
   const showResults = suggestions.length > 0;
 
+  const renderDefaultItem = ({item, index}) => (
+    <TouchableOpacity
+      key={index.toString()}
+      onPress={() => onPressSuggestion && onPressSuggestion(item)}>
+      <Text style={styles.listItem}>{item}</Text>
+    </TouchableOpacity>
+  );
+
   const renderResultList = () => {
     return (
       <FlatList
         data={suggestions}
         style={[styles.list, listStyle]}
         keyboardShouldPersistTaps={keyboardShouldPersistTaps}
-        renderItem={(itemProps) =>
-          renderItem ? (
-            renderItem(itemProps)
-          ) : (
-            <TouchableOpacity
-              key={itemProps.index.toString()}
-              onPress={() =>
-                onPressSuggestion && onPressSuggestion(itemProps.item)
-              }>
-              <Text style={styles.listItem}>{itemProps.item}</Text>
-            </TouchableOpacity>
-          )
-        }
+        renderItem={renderItem ?? renderDefaultItem}
         {...flatListProps}
       />
     );
