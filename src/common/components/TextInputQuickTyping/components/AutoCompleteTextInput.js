@@ -1,6 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {FlatList, Platform, StyleSheet, TextInput, View} from 'react-native';
+import {
+  Button,
+  FlatList,
+  Platform,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
 
 export const AutoCompleteTextInput = ({
   containerStyle,
@@ -8,9 +15,14 @@ export const AutoCompleteTextInput = ({
   renderItem,
   style,
   suggestions,
+  onChangeText,
   ...props
 }) => {
   const showResults = suggestions.length > 0;
+
+  const onClear = () => {
+    onChangeText && onChangeText('');
+  };
 
   const renderResultList = () => {
     return (
@@ -27,7 +39,14 @@ export const AutoCompleteTextInput = ({
   return (
     <View style={[styles.container, containerStyle]}>
       <View style={styles.inputContainer}>
-        <TextInput style={[styles.input, style]} {...props} />
+        <View style={styles.rowContainerItemCentered}>
+          <TextInput
+            {...props}
+            style={[styles.input, style]}
+            onChangeText={onChangeText}
+          />
+          <Button title="X" onPress={onClear} />
+        </View>
       </View>
       <View>{showResults && renderResultList()}</View>
     </View>
@@ -83,6 +102,11 @@ const styles = StyleSheet.create({
     fontSize: 20,
     height: 60,
     padding: 10,
+    flex: 1,
+  },
+  rowContainerItemCentered: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   listItem: {
     fontSize: 20,

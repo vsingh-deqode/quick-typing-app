@@ -1,7 +1,8 @@
-export const debounce = (fn, delay) => {
+export const debounce = (fun, delay) => {
   let timer = null;
-  clearTimeout(timer);
-  timer = setTimeout(() => {
-    fn();
-  }, delay);
+
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fun(...args), delay);
+  };
 };

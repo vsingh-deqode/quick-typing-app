@@ -29,15 +29,19 @@ const TextInputQuickTyping = ({
   }, [isQuerying, data]);
 
   React.useEffect(() => {
-    onChangeText && onChangeText(searchText);
+    try {
+      onChangeText && onChangeText(searchText);
 
-    if (isTextNullOrEmpty(searchText)) {
-      setSuggestions([]);
+      if (isTextNullOrEmpty(searchText)) {
+        setSuggestions([]);
 
-      return;
+        return;
+      }
+
+      setQuery(lastWord(searchText));
+    } catch (error) {
+      setQuery('');
     }
-
-    setQuery(lastWord(searchText));
   }, [searchText, onChangeText]);
 
   React.useEffect(() => {
@@ -64,6 +68,10 @@ const TextInputQuickTyping = ({
 
   const renderItem = ({item, index}) => {
     const onPress = () => onPressItem(item);
+
+    if (isTextNullOrEmpty(item)) {
+      return null;
+    }
 
     return (
       <ListItemText

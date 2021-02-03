@@ -9,18 +9,21 @@ export const Home = () => {
   const [options, setOptions] = React.useState([]);
 
   React.useEffect(() => {
-    debounce(() => getSuggestions(query), 500);
-  }, [query, getSuggestions]);
+    delayedQuery(query);
+  }, [query, delayedQuery]);
 
-  const getSuggestions = React.useCallback(
-    (queryText) =>
-      MockServer.getSuggestions(queryText)
-        .then(setOptions)
-        .catch((_) => {
-          setOptions([]);
-        }),
+  const delayedQuery = React.useCallback(
+    debounce((queryText) => getSuggestions(queryText), 500),
     [],
   );
+
+  const getSuggestions = (queryText) => {
+    MockServer.getSuggestions(queryText)
+      .then(setOptions)
+      .catch((_) => {
+        setOptions([]);
+      });
+  };
 
   const onOutSideTouch = () => {
     Keyboard.dismiss();
