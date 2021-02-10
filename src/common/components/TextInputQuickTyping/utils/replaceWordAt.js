@@ -1,17 +1,15 @@
 import {SPACE_DELIMITER} from '../constants';
 
-export const replaceLastBy = (replacement, groupOfWords) => {
+export const replaceWordAt = (index, word, groupOfWords) => {
   if (!groupOfWords) {
     return '';
   }
 
-  if (!replacement) {
+  if (!word || index < 0) {
     return groupOfWords;
   }
 
   const wordsArray = groupOfWords.split(SPACE_DELIMITER);
-  wordsArray.pop();
-  wordsArray.push(replacement);
-
+  wordsArray.splice(index, 1, word);
   return wordsArray.join(SPACE_DELIMITER);
 };

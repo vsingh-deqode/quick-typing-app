@@ -3,6 +3,7 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 export const ListItemText = ({label, query, isMatched, ...props}) => {
+  query = query ?? '';
   let labelArray = label.split('');
   const elementArray = [];
 
@@ -27,7 +28,6 @@ export const ListItemText = ({label, query, isMatched, ...props}) => {
 
 ListItemText.propTypes = {
   label: PropTypes.string.isRequired,
-  isMatched: PropTypes.bool.isRequired,
 };
 
 const styles = StyleSheet.create({

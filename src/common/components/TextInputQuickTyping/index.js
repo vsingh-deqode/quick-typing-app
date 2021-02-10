@@ -6,6 +6,8 @@ import {ListItemText} from './components/ListItemText';
 import {isTextNullOrEmpty} from './utils/isTextNullOrEmpty';
 import {lastWord} from './utils/lastWord';
 import {replaceLastBy} from './utils/replaceLastBy';
+import {replaceWordAt} from './utils/replaceWordAt';
+import {unMatchedWord} from './utils/unMatchedWord';
 
 const TextInputQuickTyping = ({
   data,
@@ -13,10 +15,11 @@ const TextInputQuickTyping = ({
   onChangeQuery,
   ...props
 }) => {
-  const [searchText, setSearchText] = React.useState();
-  const [query, setQuery] = React.useState();
+  const [searchText, setSearchText] = React.useState(null);
+  const [query, setQuery] = React.useState(null);
   const [suggestions, setSuggestions] = React.useState([]);
   const [isQuerying, setIsQuerying] = React.useState(false);
+  const [queryIndex, setQueryIndex] = React.useState(-1);
 
   React.useEffect(() => {
     if (data.length === 0 || !isQuerying) {
@@ -29,29 +32,15 @@ const TextInputQuickTyping = ({
   }, [isQuerying, data]);
 
   React.useEffect(() => {
-    try {
-      onChangeText && onChangeText(searchText);
+    onChangeText && onChangeText(searchText);
 
-      if (isTextNullOrEmpty(searchText)) {
-        setSuggestions([]);
-
-        return;
-      }
-
-      setQuery(lastWord(searchText));
-    } catch (error) {
-      setQuery('');
+    if (isTextNullOrEmpty(searchText)) {
+      setSuggestions([]);
     }
   }, [searchText, onChangeText]);
 
   React.useEffect(() => {
-    if (isTextNullOrEmpty(query)) {
-      setIsQuerying(false);
-
-      return;
-    }
-
-    setIsQuerying(true);
+    setIsQuerying(!isTextNullOrEmpty(query));
   }, [query]);
 
   React.useEffect(() => {
@@ -62,8 +51,33 @@ const TextInputQuickTyping = ({
     onChangeQuery && onChangeQuery(query);
   }, [query, isQuerying, onChangeQuery]);
 
+  const onChangeInputText = (newText) => {
+    try {
+      const {word, index} = unMatchedWord(searchText, newText);
+      const queryText = word ?? lastWord(newText);
+      setQuery(queryText);
+      setQueryIndex(index);
+      setSearchText(newText);
+    } catch (error) {
+      setQuery(null);
+      setQueryIndex(-1);
+      setSearchText(newText);
+    }
+  };
+
   const onPressItem = (suggestion) => {
+    if (!isTextNullOrEmpty(query) && queryIndex >= -1) {
+      resetQuery();
+      setSearchText(`${replaceWordAt(queryIndex, suggestion, searchText)} `);
+      return;
+    }
+
     setSearchText(`${replaceLastBy(suggestion, searchText)} `);
+  };
+
+  const resetQuery = () => {
+    setQuery(null);
+    setQueryIndex(-1);
   };
 
   const renderItem = ({item, index}) => {
@@ -78,7 +92,6 @@ const TextInputQuickTyping = ({
         key={index.toString()}
         label={item}
         query={query}
-        isMatched={item.toLowerCase() === query.toLowerCase()}
         onPress={onPress}
       />
     );
@@ -90,7 +103,7 @@ const TextInputQuickTyping = ({
       containerStyle={styles.container}
       suggestions={suggestions}
       defaultValue={searchText}
-      onChangeText={setSearchText}
+      onChangeText={onChangeInputText}
       renderItem={renderItem}
       keyExtractor={(_, index) => index.toString()}
     />
