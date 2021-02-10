@@ -77,6 +77,7 @@ const TextInputQuickTyping = ({
       <ListItemText
         key={index.toString()}
         label={item}
+        query={query}
         isMatched={item.toLowerCase() === query.toLowerCase()}
         onPress={onPress}
       />

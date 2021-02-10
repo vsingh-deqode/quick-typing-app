@@ -2,10 +2,25 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-export const ListItemText = ({label, isMatched, ...props}) => {
+export const ListItemText = ({label, query, isMatched, ...props}) => {
+  let labelArray = label.split('');
+  const elementArray = [];
+
+  labelArray.forEach((item, index) => {
+    if (query.includes(item)) {
+      elementArray.push(
+        <Text key={index.toString()} style={styles.highlightText}>
+          {item}
+        </Text>,
+      );
+    } else {
+      elementArray.push(item);
+    }
+  });
+
   return (
     <TouchableOpacity style={styles.listItem} {...props}>
-      <Text style={styles.listItemText(isMatched)}>{label}</Text>
+      <Text styles={styles.listItemText}>{elementArray}</Text>
     </TouchableOpacity>
   );
 };
@@ -19,11 +34,14 @@ const styles = StyleSheet.create({
   listItem: {
     margin: 5,
   },
-  listItemText: (isMatched) => ({
-    fontSize: isMatched ? 18 : 16,
+  highlightText: {
+    color: 'red',
+  },
+  listItemText: {
+    fontSize: 16,
     margin: 2,
     padding: 5,
-    color: isMatched ? 'green' : 'black',
-    fontWeight: isMatched ? 'bold' : 'normal',
-  }),
+    color: 'black',
+    fontWeight: 'normal',
+  },
 });
